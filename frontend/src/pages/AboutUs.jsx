@@ -64,20 +64,12 @@ const AboutUs = () => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   axios.get('http://localhost:5000/api/cms/page/about-us')
-  //     .then(res => setData(res.data))
-  //     .catch(err => console.error("Error fetching about-us page", err))
-  //     .finally(() => setLoading(false));
-  // }, []);
-
   useEffect(() => {
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-  axios.get(`${API_URL}/api/cms/page/about-us`)
-    .then(res => setData(res.data))
-    .catch(err => console.error("Error fetching about-us page", err))
-    .finally(() => setLoading(false));
-}, []);
+    axios.get('http://localhost:5000/api/cms/page/about-us')
+      .then(res => setData(res.data))
+      .catch(err => console.error("Error fetching about-us page", err))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div className="w-full min-h-screen bg-[#F5F0E8]">
