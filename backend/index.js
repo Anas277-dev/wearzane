@@ -44,6 +44,10 @@ app.get('/', (req, res) => {
   res.send('WearZane Backend is running...');
 });
 
+app.use((req, res, next) => {
+  res.status(404).json({ message: "Route not found on Vercel backend!" });
+});
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
