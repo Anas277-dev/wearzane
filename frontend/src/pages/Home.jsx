@@ -323,7 +323,16 @@ const Home = () => {
       const res = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/products?minPrice=${min}&maxPrice=${max}&search=${encodeURIComponent(searchVal)}`
       );
-      setProducts(res.data);
+      console.log("Products API response:", res.data); // 🎯 DEBUG: response shape check karne ke liye
+      if (Array.isArray(res.data)) {
+        setProducts(res.data);
+      } else if (Array.isArray(res.data?.products)) {
+        setProducts(res.data.products);
+      } else if (Array.isArray(res.data?.data)) {
+        setProducts(res.data.data);
+      } else {
+        setProducts([]);
+      }
     } catch (err) {
       console.error("Error fetching products", err);
     }
@@ -344,7 +353,16 @@ const Home = () => {
     const fetchBanners = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/cms/banners`);
-        setBanners(res.data);
+        console.log("Banners API response:", res.data); // 🎯 DEBUG: response shape check karne ke liye
+        if (Array.isArray(res.data)) {
+          setBanners(res.data);
+        } else if (Array.isArray(res.data?.banners)) {
+          setBanners(res.data.banners);
+        } else if (Array.isArray(res.data?.data)) {
+          setBanners(res.data.data);
+        } else {
+          setBanners([]);
+        }
       } catch (err) {
         console.error("Error fetching banners", err);
       }
