@@ -318,6 +318,7 @@ const Home = () => {
 
   // 🎯 Central API Fetch Function
   const fetchProducts = async (searchVal = '', min = '', max = '') => {
+    console.log("🎯 VITE_API_URL value hai:", import.meta.env.VITE_API_URL); // 🎯 DEBUG
     setLoading(true);
     try {
       const res = await axios.get(
