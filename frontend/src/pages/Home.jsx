@@ -61,135 +61,6 @@
 //   }, [banners]);
 
 //   return (
-//     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
-      
-//       {/* HERO BANNER SECTION (Search ke dauran automatic hide hojayega taake result clear dikhein) */}
-//       {banners.length > 0 && !searchParam && (
-//         <div className="relative w-full h-[300px] md:h-[450px] rounded-2xl overflow-hidden bg-gray-100 shadow-sm">
-//           {banners.map((banner, index) => (
-//             <div 
-//               key={banner.id} 
-//               className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-//                 index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
-//               }`}
-//             >
-//               <img src={banner.image_url} alt={banner.title} className="w-full h-full object-cover" />
-//               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8 text-white">
-//                 <h2 className="text-2xl md:text-4xl font-bold uppercase tracking-wider mb-2">{banner.title}</h2>
-//                 {banner.subtitle && <p className="text-sm md:text-base font-light tracking-wide mb-4">{banner.subtitle}</p>}
-//                 {banner.button_link && (
-//                   <a href={banner.button_link} className="bg-white text-black px-6 py-2 rounded-full font-medium text-xs md:text-sm uppercase tracking-widest w-max hover:bg-black hover:text-white transition-all">
-//                     Shop Now
-//                   </a>
-//                 )}
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       )}
-
-//       {/* PRODUCT ARRIVALS SECTION */}
-//       <div>
-//         <header className="mb-12 text-center">
-//           <h1 className="text-3xl font-light tracking-[0.2em] uppercase italic text-gray-800">
-//             {searchParam ? `Live Results For: "${searchParam}"` : "New Arrivals"}
-//           </h1>
-//           <div className="h-1 w-16 bg-black mx-auto mt-2"></div>
-//         </header>
-
-//         <PriceFilter 
-//           onFilter={(min, max) => { setMinPrice(min); setMaxPrice(max); }} 
-//           currentMin={minPrice} 
-//           currentMax={maxPrice}
-//           setMin={setMinPrice}
-//           setMax={setMaxPrice}
-//         />
-
-//         {loading ? (
-//           <div className="text-center p-20 text-xl font-light uppercase tracking-widest animate-pulse text-gray-400">Searching Products...</div>
-//         ) : products.length > 0 ? (
-//           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-//             {products.map((product) => <ProductCard key={product.id} product={product} />)}
-//           </div>
-//         ) : (
-//           <div className="text-center py-20 text-gray-400 italic">No products found matching "{searchParam}".</div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Home;
-
-
-
-
-
-
-
-// import React, { useEffect, useState } from 'react';
-// import { useLocation } from 'react-router-dom';
-// import axios from 'axios';
-// import ProductCard from '../components/ProductCard';
-// import PriceFilter from '../components/PriceFilter';
-
-// const Home = () => {
-//   const [products, setProducts] = useState([]);
-//   const [banners, setBanners] = useState([]);
-//   const [currentSlide, setCurrentSlide] = useState(0);
-//   const [loading, setLoading] = useState(false); // Default false rakhein taake screen jhatke na mare
-//   const [minPrice, setMinPrice] = useState('');
-//   const [maxPrice, setMaxPrice] = useState('');
-
-//   const location = useLocation();
-//   const queryParams = new URLSearchParams(location.search);
-//   const searchParam = queryParams.get('search') || '';
-
-//   // 🎯 Central API Fetch Function
-//   const fetchProducts = async (searchVal = '', min = '', max = '') => {
-//     setLoading(true);
-//     try {
-//       const res = await axios.get(
-//         `http://localhost:5000/api/products?minPrice=${min}&maxPrice=${max}&search=${encodeURIComponent(searchVal)}`
-//       );
-//       setProducts(res.data);
-//     } catch (err) {
-//       console.error("Error fetching products", err);
-//     }
-//     setLoading(false);
-//   };
-
-//   // 🎯 DEBOUNCE EFFECT: Type karne ke 400ms baad API call hogi
-//   useEffect(() => {
-//     const delayDebounceFn = setTimeout(() => {
-//       fetchProducts(searchParam, minPrice, maxPrice);
-//     }, 400); // 400ms ka delay jab user typing rokay ga
-
-//     return () => clearTimeout(delayDebounceFn); // Agar user phir se type kare toh purana timer cancel
-//   }, [searchParam, minPrice, maxPrice]); // Jab bhi search lafz ya price badle, ye trigger hoga
-
-//   useEffect(() => {
-//     // Banners sirf ek baar load honge
-//     const fetchBanners = async () => {
-//       try {
-//         const res = await axios.get('http://localhost:5000/api/cms/banners');
-//         setBanners(res.data);
-//       } catch (err) {
-//         console.error("Error fetching banners", err);
-//       }
-//     };
-//     fetchBanners();
-//   }, []);
-
-//   useEffect(() => {
-//     if (banners.length <= 1) return;
-//     const timer = setInterval(() => {
-//       setCurrentSlide((prev) => (prev + 1) % banners.length);
-//     }, 4000);
-//     return () => clearInterval(timer);
-//   }, [banners]);
-
-//   return (
 //     <div className="w-full min-h-screen bg-[#F5F0E8]">
 
 //       {/* HERO BANNER SECTION - full-bleed edge to edge (Search ke dauran automatic hide hojayega) */}
@@ -297,12 +168,15 @@
 
 
 
-
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import ProductCard from '../components/ProductCard';
 import PriceFilter from '../components/PriceFilter';
+
+// 🎯 Agar Vercel/production me VITE_API_URL set hai to wahi use hoga,
+// warna local PC par apne aap localhost:5000 par fallback ho jayega
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -318,13 +192,12 @@ const Home = () => {
 
   // 🎯 Central API Fetch Function
   const fetchProducts = async (searchVal = '', min = '', max = '') => {
-    console.log("🎯 VITE_API_URL value hai:", import.meta.env.VITE_API_URL); // 🎯 DEBUG
     setLoading(true);
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/api/products?minPrice=${min}&maxPrice=${max}&search=${encodeURIComponent(searchVal)}`
+        `${API_URL}/api/products?minPrice=${min}&maxPrice=${max}&search=${encodeURIComponent(searchVal)}`
       );
-      console.log("Products API response:", res.data); // 🎯 DEBUG: response shape check karne ke liye
+      // 🎯 Safety check: backend chahe plain array de ya { products: [...] } / { data: [...] } wrap karke de, dono handle honge
       if (Array.isArray(res.data)) {
         setProducts(res.data);
       } else if (Array.isArray(res.data?.products)) {
@@ -353,8 +226,7 @@ const Home = () => {
     // Banners sirf ek baar load honge
     const fetchBanners = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/cms/banners`);
-        console.log("Banners API response:", res.data); // 🎯 DEBUG: response shape check karne ke liye
+        const res = await axios.get(`${API_URL}/api/cms/banners`);
         if (Array.isArray(res.data)) {
           setBanners(res.data);
         } else if (Array.isArray(res.data?.banners)) {
